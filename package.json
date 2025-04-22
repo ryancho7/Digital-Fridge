@@ -1,0 +1,16 @@
+{
+  "name": "info-442",
+  "version": "1.0.0",
+  "description": "This is a fullstack JavaScript application built using:",
+  "scripts": {
+    "client": "npm start --prefix frontend",
+    "server": "npm start --prefix backend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
