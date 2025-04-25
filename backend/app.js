@@ -1,9 +1,9 @@
-import express from 'express';
+import express, { application } from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import 'dotenv/config'
-import models from './models/User.js';
+import models from './models/index.js';
 
 import usersRouter from './routes/users.js';
 
@@ -12,8 +12,6 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-// dotenv.config();
 
 const app = express();
 
@@ -28,7 +26,12 @@ app.use((req, res, next) => {
     next()
 })
 
+// public routes
 app.use('/users', usersRouter);
+
+// protected routes
+// app.use('/fridges', authMiddleware, fridgesRouter);
+// app.use('/food-items', authMiddleware, foodItemsRouter);
 
 // for prod -> npm run build
 // if (process.env.NODE_ENV === 'production') {
@@ -45,6 +48,6 @@ app.use('/users', usersRouter);
 
 app.get('/', (req, res) => {
     res.send('Please set to production')
-})
+});
 
 export default app;

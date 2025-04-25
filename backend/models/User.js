@@ -1,20 +1,13 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const models = {}
-
-// connect to mongodb
-console.log("conecting to mongodb");
-await mongoose.connect(process.env.MONGO_URI);
-console.log("Successfully connected to mongodb");
+console.log('Creating User Schema')
 
 const userSchema = new mongoose.Schema({
-username: String,
-description: String
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    passwordHash: { type: String, required: true }
 });
 
-models.userSchema = mongoose.model('User', userSchema);
+console.log('Finished created User Schema');
 
-console.log('finished creating models');
-
-export default models;
-
+export default mongoose.model('User', userSchema);
