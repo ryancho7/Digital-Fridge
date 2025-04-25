@@ -14,7 +14,7 @@ router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     // check if user already has an account
-    const existingUser = User.findOne({ email: email });
+    const existingUser = await User.findOne({ email: email });
     if (existingUser) {
         return res.status(400).json({ message: 'Email already in use' });
     }
@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     // find user in db
-    const existingUser = User.findOne({ email: email });
+    const existingUser = await User.findOne({ email: email });
     if(!existingUser) {
         return res.status(400).json({ message: 'Invalid credentials' });
     }

@@ -5,7 +5,7 @@ import logger from 'morgan';
 import 'dotenv/config'
 import models from './models/index.js';
 
-import usersRouter from './routes/users.js';
+import apiRoutes from './routes/api.js';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -26,12 +26,7 @@ app.use((req, res, next) => {
     next()
 })
 
-// public routes
-app.use('/users', usersRouter);
-
-// protected routes
-// app.use('/fridges', authMiddleware, fridgesRouter);
-// app.use('/food-items', authMiddleware, foodItemsRouter);
+app.use('/api', apiRoutes);
 
 // for prod -> npm run build
 // if (process.env.NODE_ENV === 'production') {
