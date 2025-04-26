@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import UserHome from './pages/UserHome';
-import { Home as LoginPage } from './pages/Home';
+import LoginPage from './pages/Login';
 
 function App() {
   return (

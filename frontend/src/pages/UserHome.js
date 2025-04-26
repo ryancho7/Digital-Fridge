@@ -1,6 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 function UserHome() {
+
+  const [ fridge, setFridge ] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+
+    // check if user is authenticated
+    const token = localStorage.getItem('token');
+
+    if(!token) {
+      navigate('/login');
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/fridges', {
+          // authorization header to pass backend auth middleware
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch fridges');
+        }
+
+        // comes in string json format
+        const data = await res.json();
+        console.log(data);
+        setFridge(data);
+      } catch (error) {
+        console.error('Error fetching protected data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       {/* Add Item bar */}
