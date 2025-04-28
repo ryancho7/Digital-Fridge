@@ -4,13 +4,17 @@ import { useState } from "react";
 const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [ email, setEmail ] = useState("");
+  const [ password, setPassword ] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle login logic, e.g., sending request to your API
     console.log("Logging in with", { email, password });
+  };
+
+  const handleSignUp = () => {
+    navigate('/signup');
   };
 
   return (
@@ -71,7 +75,7 @@ export default function LoginForm() {
 
         <div className="mt-4 text-center text-sm text-gray-600">
           Don&apos;t have an account?{" "}
-          <a href="#" className="text-blue-500 hover:underline">
+          <a href="#" className="text-blue-500 hover:underline" onClick={handleSignUp}>
             Sign up
           </a>
         </div>
