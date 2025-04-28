@@ -29,11 +29,17 @@ router.post('/register', async (req, res) => {
 
     try {
         await newUser.save();
+        // create token
+        const token = jwt.sign(
+            { userId: existingUser._id },
+            process.env.JWT_SECRET,
+            { expiresIn: '1d'},
+        );
+        res.status(201).json({ token: token });
     } catch (error) {
         console.log(`Error saving user: ${error}`);
         res.status(500).json({ message: 'Error creating saving user' });
     }
-    res.status(201).json({ message: 'User created' });
 });
 
 // login to account

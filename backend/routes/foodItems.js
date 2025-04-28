@@ -31,7 +31,7 @@ router.post('/:fridgeId', async(req, res) => {
         category: category,
         quantity: quantity,
         unit: unit,
-        expirationDate: expirationDate
+        expirationDate: new Date(expirationDate)
     });
 
     try {

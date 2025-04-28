@@ -17,6 +17,8 @@ router.get('/', async (req, res) => {
 // create new fridge
 router.post('/', async(req, res) => {
     // create new fridge
+
+    console.log('Request body:', req.body);
     const newFridge = new Fridge({
         user: req.userId,
         name: req.body.name || 'My Digital Fridge',
@@ -25,7 +27,7 @@ router.post('/', async(req, res) => {
     // save fridge
     try {
         await newFridge.save();
-        res.status(201).json({ message: 'Fridge created' });
+        res.status(201).json(newFridge);
     } catch (error) {
         console.log(`Error creating fridge: ${error}`);
         res.status(500).json({ message: 'Error creating fridge' });
