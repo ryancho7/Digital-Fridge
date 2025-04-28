@@ -1,16 +1,37 @@
 import { useState } from "react";
-
-// Utility to join class names
-const cn = (...classes) => classes.filter(Boolean).join(" ");
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic, e.g., sending request to your API
-    console.log("Logging in with", { email, password });
+    try {
+      // access /login api and send it email and password info
+      const res = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password })
+      });
+      // if valid
+      if(res.ok) {
+        console.log('Login success!');
+        const data = await res.json();
+        // add token to local storage to authorize access to api with db interaction
+        localStorage.setItem('token', data.token);
+        navigate('/home');
+      } else {
+        const errorData = await res.json();
+        console.error('Login failed:', errorData.message || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   const handleSignUp = () => {
@@ -20,7 +41,6 @@ export default function LoginForm() {
   return (
     <div className="flex flex-col gap-6">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm mx-auto">
-        {/* Card Header */}
         <div className="mb-4">
           <h2 className="text-2xl font-bold text-center">Login</h2>
           <p className="text-sm text-center text-gray-500">
