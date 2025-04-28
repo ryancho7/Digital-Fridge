@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [ email, setEmail ] = useState("");
+  const [ password, setPassword ] = useState("");
 
   const navigate = useNavigate();
 
@@ -32,6 +32,10 @@ export default function LoginForm() {
     } catch (error) {
       console.error('Error during login:', error);
     }
+  };
+
+  const handleSignUp = () => {
+    navigate('/signup');
   };
 
   return (
@@ -91,7 +95,7 @@ export default function LoginForm() {
 
         <div className="mt-4 text-center text-sm text-gray-600">
           Don&apos;t have an account?{" "}
-          <a href="#" className="text-blue-500 hover:underline">
+          <a href="#" className="text-blue-500 hover:underline" onClick={handleSignUp}>
             Sign up
           </a>
         </div>
