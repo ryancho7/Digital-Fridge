@@ -10,7 +10,7 @@ router.get('/:fridgeId', async (req, res) => {
 
     // fetch food items
     try {
-        const foodItems = await FoodItem.find({ fridgeId, user: req.userId });
+        const foodItems = await FoodItem.find({ fridge: fridgeId });
         res.json(foodItems);
     } catch (error) {
         console.log(`Error fetching food items in fridge ${error}`);
@@ -36,7 +36,7 @@ router.post('/:fridgeId', async(req, res) => {
 
     try {
         await newFoodItem.save();
-        res.status(201).json({ message: 'Food Item created' });
+        res.status(201).json(newFoodItem);
     } catch  (error) {
         console.log(`Error creating food item: ${error}`);
         res.status(500).json({ message: 'Error creating food item' });
