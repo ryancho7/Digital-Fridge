@@ -66,6 +66,7 @@ function UserHome() {
     }
   };
 
+  console.log(fridges);
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Your Fridges</h1>
@@ -73,7 +74,10 @@ function UserHome() {
         <p className="text-center text-gray-500">You don't have any fridges yet. Add one to get started!</p>
       ) : (
         fridges.map((fridge) => (
-          <FridgeCard key={fridge.id} fridgeName={fridge.name} fridgeId={fridge.id}/>
+          <>
+            <FridgeCard key={fridge._id} fridgeName={fridge.name} fridgeId={fridge._id}/>
+          </>
+          
         ))
       )}
       <AddFridge onAddFridge={handleAddFridge} />
