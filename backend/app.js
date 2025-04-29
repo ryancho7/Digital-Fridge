@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import 'dotenv/config'
 import models from './models/index.js';
+import cors from 'cors';
 
 import apiRoutes from './routes/api.js';
 
@@ -14,6 +15,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
