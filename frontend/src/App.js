@@ -6,6 +6,7 @@ import LoginPage from './pages/Login';
 import SignupPage from './pages/Signup.js';
 import UserFridgePage from './pages/UserFridge.js';
 import ReceiptPage from './pages/ReceiptPage.js';
+import FridgeHome from './pages/FridgeHome.js';
 
 function App() {
 	return (
@@ -17,6 +18,7 @@ function App() {
 				<Route path='/home' element={<UserHome />} />
 				<Route path='/userfridge/:fridgeId' element={<UserFridgePage />} />
 				<Route path='/ReceiptPage' element={<ReceiptPage />} />
+				<Route path='/fridge/:id' element={<FridgeHome />} />
 			</Routes>
 		</Router>
 	);

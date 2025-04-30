@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import '../App.css';
+//import '../App.css';
 
 const receipts = [
 	{
 		name: 'Chicken Pasta',
-		image: './images/chick.png',
+		image: 'images/chick.png',
 		ingredients: [
 			'Chicken',
 			'Heavy Cream',
@@ -64,12 +64,15 @@ function ReceiptPage() {
 				</button>
 
 				<img
-					src={currentReceipt.image}
-					alt={currentReceipt.name}
-					className='receipt-image'
+  					src={currentReceipt.image}
+  					alt={currentReceipt.name}
+ 				 	className="w-96 h-auto mx-auto rounded-lg shadow-md"
 				/>
 
-				<h1 className='receipt-title'>{currentReceipt.name}</h1>
+				<h1 className="receipt-title mt-1 text-xl font-bold text-gray-800">
+   				 {currentReceipt.name}
+				 
+  				</h1>
 			</motion.div>
 
 			{/* Bottom Section */}
