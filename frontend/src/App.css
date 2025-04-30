@@ -3,6 +3,7 @@ body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	background-color: lightgrey;
 }
 
 #root {
@@ -19,7 +20,7 @@ body {
 	font-family: 'poppins', sans-serif;
 	margin: 0;
 	padding: 0;
-	overflow: hidden; /* Prevent page scroll */
+	overflow: hidden; 
 }
 
 .receipt-page {
@@ -33,11 +34,14 @@ body {
 
 .top-section {
 	display: flex;
-	flex: 6; /* 60% height */
+	flex: 6; 
 	position: relative;
 	width: 100%;
 	overflow: hidden;
 	justify-content: center;
+	text-align: center;
+
+
 }
 
 .back-button {
@@ -52,25 +56,28 @@ body {
 	object-fit: cover;
 	align-self: center;
 	justify-content: center;
+	filter: brightness(100%);
 	border-radius: 5%;
 }
 
 .receipt-page h2 {
 	font-weight: 650;
 	font-size: 1.1rem;
+	
 }
 
 .receipt-title {
 	position: absolute;
 	bottom: 0;
-	width: 60%;
-	background: rgba(0, 0, 0, 0.8);
+	width: 29%;
+	background-color: rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(4px); 
 	color: white;
 	font-size: 1.5rem;
 	font-weight: 300;
 	text-align: center;
-	padding: 0.75rem 0;
-	margin-bottom: 3%;
+	padding: 1rem 0;
+	margin-bottom: 0%;
 }
 
 .bottom-section {
@@ -85,7 +92,7 @@ body {
 	height: 100%;
 	overflow-y: scroll;
 	padding: 1rem;
-	padding-bottom: 3rem; /* Space for fade */
+	padding-bottom: 3rem;
 }
 
 .ingredients-header {
@@ -115,7 +122,6 @@ body {
 	margin-bottom: 5%;
 }
 
-/* Fade effect at bottom */
 .fade-bottom {
 	position: absolute;
 	bottom: 0;
@@ -124,3 +130,9 @@ body {
 	background: linear-gradient(to top, white, rgba(255, 255, 255, 0));
 	pointer-events: none;
 }
+
+.fridge-home {
+	background-color: #e0f2fe; /* soft light blue */
+	min-height: 100vh;
+	padding: 2rem;
+  }
