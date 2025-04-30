@@ -172,3 +172,11 @@ body {
 .expire-critical {
 	background-color: #919191; /* red-700 */
 }
+
+.fridgePage {
+	background-color: white;
+}
+
+.fridgeAdd {
+	margin: 8%;
+}

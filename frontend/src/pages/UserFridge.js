@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import AddFoodItem from '../components/ui/AddFoodItem.js';
+import { useNavigate } from 'react-router-dom';
+import AddFoodItem from '../components/ui/AddFoodItem';
+
+const CATEGORIES = [
+	'Produce',
+	'Meat & Seafood',
+	'Dairy & Eggs',
+	'Beverages',
+	'Leftovers & Prepared',
+	'Condiments & Sauces',
+];
+const CATEGORY_IMAGES = {
+	Produce: '../images/fruits.png',
+	'Meat & Seafood': '../images/meat.png',
+	'Dairy & Eggs': '../images/dairy.png',
+	Beverages: '../images/drinks.png',
+	'Leftovers & Prepared': '../images/leftover.png',
+	'Condiments & Sauces': '../images/condiment.png',
+};
 
 function UserFridgePage() {
-	const { fridgeId } = useParams();
-
 	const [foodItems, setFoodItems] = useState(null);
-
+	const [showAddItemModal, setShowAddItemModal] = useState(false);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -17,58 +32,128 @@ function UserFridgePage() {
 		}
 		const fetchFoodItems = async () => {
 			try {
-				const res = await fetch(`/api/foodItems/${fridgeId}`, {
+				const res = await fetch('/api/foodItems', {
 					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+					headers: { Authorization: `Bearer ${token}` },
 				});
-
-				if (!res.ok) {
-					throw new Error('Failed to fetch food items');
-				}
+				if (!res.ok) throw new Error('Failed to fetch food items');
 				const data = await res.json();
-				console.log(data);
 				setFoodItems(data);
 			} catch (error) {
 				console.error('Error fetching food items:', error);
 			}
 		};
 		fetchFoodItems();
-	}, [fridgeId]);
+	}, [navigate]);
 
-	if (!foodItems) {
-		return <div>Loading fridge details...</div>;
-	}
+	if (!foodItems) return <div>Loading fridge...</div>;
 
-	console.log(foodItems);
+	const groupByCategory = (items) => {
+		return items.reduce((acc, item) => {
+			acc[item.category] = acc[item.category] || [];
+			acc[item.category].push(item);
+			return acc;
+		}, {});
+	};
+
+	const grouped = groupByCategory(foodItems);
+
+	const getColorByDaysLeft = (daysLeft) => {
+		if (daysLeft <= 3) return 'bg-red-200 text-red-800';
+		if (daysLeft <= 7) return 'bg-yellow-100 text-yellow-800';
+		return 'bg-green-100 text-green-800';
+	};
+
+	const categoryToSlug = (category) =>
+		category.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-');
 
 	return (
-		<div className='container mx-auto p-4'>
-			<h1 className='text-2xl font-bold mb-4'>Food Items in Fridge</h1>
-			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-				{foodItems.length > 0 ? (
-					foodItems.map((item) => (
-						<div
-							key={item._id}
-							className='bg-white p-4 rounded-lg shadow-md'
-						>
-							<h3 className='text-lg font-bold text-gray-800'>
-								{item.name}
-							</h3>
-							<p>
-								<strong>Quantity:</strong> {item.quantity}
-							</p>
-							<p>
-								<strong>Expiration:</strong> {item.expirationDate}
-							</p>
+		<div className='bg-gray-100 min-h-screen flex flex-col p-4'>
+			{/* Back Button */}
+			<button
+				onClick={() => navigate(-1)}
+				className='back-button fridgeBack mb-4'
+			>
+				<span className='material-symbols-outlined'>arrow_back</span>
+			</button>
+
+			<h1 className='text-2xl font-bold text-center mb-6'>Current Fridge</h1>
+
+			<div className='flex-1'>
+				{CATEGORIES.map((category) => (
+					<div key={category} className='mb-10'>
+						<div className='flex items-center gap-2 mb-2'>
+							<img
+								src={CATEGORY_IMAGES[category]}
+								alt={category}
+								className='w-8 h-8 object-contain'
+							/>
+							<h2 className='text-lg'>{category}</h2>
 						</div>
-					))
-				) : (
-					<p>No food items available in this fridge.</p>
-				)}
+						<div className='flex flex-wrap gap-3'>
+							{grouped[category]?.length > 0 ? (
+								grouped[category].map((item) => {
+									const daysLeft = Math.ceil(
+										(new Date(item.expirationDate) - new Date()) /
+											(1000 * 60 * 60 * 24)
+									);
+									return (
+										<span
+											key={item._id}
+											className={`text-sm px-4 py-2 rounded-full ${getColorByDaysLeft(
+												daysLeft
+											)}`}
+										>
+											{item.name} - {daysLeft}{' '}
+											{daysLeft === 1 ? 'Day' : 'Days'}
+										</span>
+									);
+								})
+							) : (
+								<span className='text-sm text-gray-400 italic'>
+									No items
+								</span>
+							)}
+						</div>
+					</div>
+				))}
 			</div>
-			<AddFoodItem fridgeId={fridgeId} setFoodItems={setFoodItems} />
+
+			{/* Buttons fixed to bottom */}
+			<div className='mt-8 flex justify-between gap-4'>
+				<button
+					onClick={() => setShowAddItemModal(true)}
+					className='bg-black text-white w-full py-2 rounded'
+				>
+					Add Item
+				</button>
+				<button
+					onClick={() => navigate('/edit-items')}
+					className='bg-black text-white w-full py-2 rounded'
+				>
+					Edit Items
+				</button>
+			</div>
+
+			{/* Add Item Modal */}
+			{showAddItemModal && (
+				<div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
+					<div className='bg-white rounded-lg p-6 w-full max-w-md relative fridgeAdd'>
+						<button
+							className='absolute top-2 right-4 text-gray-600 text-2xl'
+							onClick={() => setShowAddItemModal(false)}
+						>
+							&times;
+						</button>
+						<AddFoodItem
+							setFoodItems={(newItem) =>
+								setFoodItems((prev) => [...prev, newItem])
+							}
+							onClose={() => setShowAddItemModal(false)}
+						/>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
