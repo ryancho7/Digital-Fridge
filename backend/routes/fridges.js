@@ -1,37 +1,24 @@
 import express from 'express';
 import Fridge from '../models/Fridge.js';
+import FoodItem from '../models/FoodItem.js';
 
 const router = express.Router();
 
-// get user fridges
+// Get user fridges with food items included
 router.get('/', async (req, res) => {
-    try {
-        const fridges = await Fridge.find({ user: req.userId });
-        res.json(fridges);
-    } catch (error) {
-        console.log(`Error fetching fridges ${error}`);
-        res.status(500).json({ message: 'Error fetching fridges'});
-    }
-});
+  try {
+    const fridges = await Fridge.find({ user: req.userId }).lean();
 
-// create new fridge
-router.post('/', async(req, res) => {
-    // create new fridge
+    const fridgesWithItems = await Promise.all(fridges.map(async fridge => {
+      const items = await FoodItem.find({ fridge: fridge._id });
+      return { ...fridge, items };
+    }));
 
-    console.log('Request body:', req.body);
-    const newFridge = new Fridge({
-        user: req.userId,
-        name: req.body.name || 'My Digital Fridge',
-        createdAt: new Date()
-    });
-    // save fridge
-    try {
-        await newFridge.save();
-        res.status(201).json(newFridge);
-    } catch (error) {
-        console.log(`Error creating fridge: ${error}`);
-        res.status(500).json({ message: 'Error creating fridge' });
-    }
+    res.json(fridgesWithItems);
+  } catch (error) {
+    console.error(`Error fetching fridges:`, error);
+    res.status(500).json({ message: 'Error fetching fridges' });
+  }
 });
 
 export default router;

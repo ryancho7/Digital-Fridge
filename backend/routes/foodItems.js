@@ -1,46 +1,45 @@
 import express from 'express';
 import FoodItem from '../models/FoodItem.js';
+import Fridge from '../models/Fridge.js';
 
 const router = express.Router();
 
-// get fridge food items
-router.get('/:fridgeId', async (req, res) => {
+// Get all food items from the user's fridge
+router.get('/', async (req, res) => {
+  try {
+    const fridge = await Fridge.findOne({ user: req.userId });
+    if (!fridge) return res.status(404).json({ message: 'Fridge not found' });
 
-    const { fridgeId } = req.params;
-
-    // fetch food items
-    try {
-        const foodItems = await FoodItem.find({ fridge: fridgeId });
-        res.json(foodItems);
-    } catch (error) {
-        console.log(`Error fetching food items in fridge ${error}`);
-        res.status(500).json({ message: 'Error fetching food items in fridge'});
-    }
+    const foodItems = await FoodItem.find({ fridge: fridge._id });
+    res.json(foodItems);
+  } catch (error) {
+    console.error('Error fetching food items:', error);
+    res.status(500).json({ message: 'Error fetching food items' });
+  }
 });
 
-// create new food item
-router.post('/:fridgeId', async(req, res) => {
+// Create new food item in user's fridge
+router.post('/', async (req, res) => {
+  const { name, category, quantity, expirationDate } = req.body;
 
-    const { fridgeId } = req.params;
-    const { name, category, quantity, unit, expirationDate } = req.body;
+  try {
+    const fridge = await Fridge.findOne({ user: req.userId });
+    if (!fridge) return res.status(404).json({ message: 'Fridge not found' });
 
-    // create new food item
     const newFoodItem = new FoodItem({
-        fridge: fridgeId,
-        name: name,
-        category: category,
-        quantity: quantity,
-        unit: unit,
-        expirationDate: new Date(expirationDate)
+      fridge: fridge._id,
+      name,
+      category,
+      quantity,
+      expirationDate: new Date(expirationDate)
     });
 
-    try {
-        await newFoodItem.save();
-        res.status(201).json(newFoodItem);
-    } catch  (error) {
-        console.log(`Error creating food item: ${error}`);
-        res.status(500).json({ message: 'Error creating food item' });
-    }
+    await newFoodItem.save();
+    res.status(201).json(newFoodItem);
+  } catch (error) {
+    console.error('Error creating food item:', error);
+    res.status(500).json({ message: 'Error creating food item' });
+  }
 });
 
 export default router;

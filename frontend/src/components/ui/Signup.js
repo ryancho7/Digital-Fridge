@@ -2,16 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function SignupForm() {
-  const [ email, setEmail ] = useState("");
-  const [ password, setPassword ] = useState("");
-  const [ username, setUsername ] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // access /register api and send it email and password info
       const res = await fetch('/api/users/register', {
         method: 'POST',
         headers: {
@@ -19,13 +18,11 @@ export default function SignupForm() {
         },
         body: JSON.stringify({ username, email, password })
       });
-      // if valid
-      if(res.ok) {
+
+      if (res.ok) {
         console.log('Sign up success!');
-        const data = await res.json();
-        // add token to local storage to authorize access to api with db interaction
-        localStorage.setItem('token', data.token);
-        navigate('/home');
+        // Optional: await res.json() here if you need token or user data
+        navigate('/login'); // <- redirect to login instead of home
       } else {
         const errorData = await res.json();
         console.error('Sign up failed:', errorData.message || 'Unknown error');
@@ -54,7 +51,7 @@ export default function SignupForm() {
               </label>
               <input
                 id="username"
-                type="username"
+                type="text"
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -78,11 +75,9 @@ export default function SignupForm() {
             </div>
 
             <div className="grid gap-2">
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="text-sm font-semibold text-gray-700">
-                  Password
-                </label>
-              </div>
+              <label htmlFor="password" className="text-sm font-semibold text-gray-700">
+                Password
+              </label>
               <input
                 id="password"
                 type="password"
