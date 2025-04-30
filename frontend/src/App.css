@@ -3,24 +3,29 @@ body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	background-color: lightgrey;
 }
 
 #root {
 	height: 100%;
 }
 
+.reciptHome {
+	margin: 18px;
+}
 .receiptTitle {
 	font-family: 'Lobster Two', sans-serif;
 	font-size: 1.8rem;
 	margin-bottom: 10px;
 }
 
+.receipt-image {
+	margin-bottom: 40px;
+}
 body {
 	font-family: 'poppins', sans-serif;
 	margin: 0;
 	padding: 0;
-	overflow: hidden; 
+	overflow: hidden; /* Prevent page scroll */
 }
 
 .receipt-page {
@@ -34,14 +39,11 @@ body {
 
 .top-section {
 	display: flex;
-	flex: 6; 
+	flex: 6; /* 60% height */
 	position: relative;
 	width: 100%;
 	overflow: hidden;
 	justify-content: center;
-	text-align: center;
-
-
 }
 
 .back-button {
@@ -56,28 +58,25 @@ body {
 	object-fit: cover;
 	align-self: center;
 	justify-content: center;
-	filter: brightness(100%);
 	border-radius: 5%;
 }
 
 .receipt-page h2 {
 	font-weight: 650;
 	font-size: 1.1rem;
-	
 }
 
 .receipt-title {
 	position: absolute;
 	bottom: 0;
-	width: 29%;
-	background-color: rgba(0, 0, 0, 0.4);
-	backdrop-filter: blur(4px); 
+	width: 60%;
+	background: rgba(0, 0, 0, 0.8);
 	color: white;
 	font-size: 1.5rem;
 	font-weight: 300;
 	text-align: center;
-	padding: 1rem 0;
-	margin-bottom: 0%;
+	padding: 0.75rem 0;
+	margin-bottom: 3%;
 }
 
 .bottom-section {
@@ -92,7 +91,7 @@ body {
 	height: 100%;
 	overflow-y: scroll;
 	padding: 1rem;
-	padding-bottom: 3rem;
+	padding-bottom: 3rem; /* Space for fade */
 }
 
 .ingredients-header {
@@ -122,6 +121,7 @@ body {
 	margin-bottom: 5%;
 }
 
+/* Fade effect at bottom */
 .fade-bottom {
 	position: absolute;
 	bottom: 0;
@@ -131,8 +131,45 @@ body {
 	pointer-events: none;
 }
 
-.fridge-home {
-	background-color: #e0f2fe; /* soft light blue */
-	min-height: 100vh;
-	padding: 2rem;
-  }
+.expireCard {
+	background-color: hsl(0, 0%, 90%);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: rgb(0, 0, 0);
+	padding: 5px;
+}
+
+.expireCardDetails {
+	display: flex;
+	width: 100%;
+}
+
+.expireCardDate,
+.expireCardDay {
+	background-color: hsla(0, 0%, 63%, 0.598);
+	display: flex;
+	width: 50%;
+	height: 2rem;
+	font-size: 0.7rem;
+	justify-content: center;
+	align-items: center;
+	border-radius: 25px;
+}
+
+/* Gradient levels */
+.expire-safe {
+	background-color: #dbfbe3; /* gray-700 */
+}
+
+.expire-medium {
+	background-color: #cfc0bf; /* amber-500 */
+}
+
+.expire-high {
+	background-color: #f5d9d9; /* red-500 */
+}
+
+.expire-critical {
+	background-color: #f3a8a8; /* red-700 */
+}
