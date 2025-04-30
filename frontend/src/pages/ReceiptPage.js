@@ -48,6 +48,11 @@ function ReceiptPage() {
 	return (
 		<div className='receipt-page'>
 			{/* Top Section */}
+			<div className='header' onClick={() => navigate('/home')}>
+				<h1 className='text-2xl font-bold text-gray-800 reciptHome'>
+					FridgeFinder
+				</h1>
+			</div>
 			<motion.div
 				className='top-section'
 				drag='x'

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddFoodItem from '../components/ui/AddFoodItem';
 import '../App.css';
-import { motion } from 'framer-motion';
 
 function UserHome() {
 	const [fridges, setFridges] = useState([]);
@@ -53,6 +52,13 @@ function UserHome() {
 		navigate('/login');
 	};
 
+	const getExpireClass = (days) => {
+		if (days <= 1) return 'expire-critical';
+		if (days <= 3) return 'expire-high';
+		if (days <= 5) return 'expire-medium';
+		return 'expire-safe';
+	};
+
 	return (
 		<div className='p-4 space-y-6'>
 			<div className='flex justify-between items-center'>
@@ -66,7 +72,10 @@ function UserHome() {
 			</div>
 
 			{fridges.length > 0 ? (
-				<div className='relative bg-black/90 text-white p-6 rounded-lg shadow-md text-center'>
+				<div
+					className='relative bg-black/90 text-white p-6 rounded-lg shadow-md text-center'
+					onClick={() => navigate('/userfridge/' + fridges[0]._id)}
+				>
 					<h2 className='text-xl font-bold text-left mb-[10px]'>
 						My Fridge
 					</h2>
@@ -88,7 +97,7 @@ function UserHome() {
 				<div className='p-6 z-10 relative'>
 					<h2 className='text-xl font-bold mb-1 receiptTitle'>Recipes</h2>
 					<p className='text-sm text-gray-300'>
-						Explore some trending <br /> receipes
+						Explore some trending <br /> recipes
 					</p>
 				</div>
 
@@ -119,14 +128,22 @@ function UserHome() {
 							return (
 								<div
 									key={item._id || index}
-									className='bg-gray-800 text-white rounded-lg p-4 flex flex-col items-center'
+									className='bg-gray-800 text-white rounded-lg p-4 flex flex-col items-center expireCard'
 								>
 									<h5 className='mt-2 font-bold'>{item.name}</h5>
-									<div className='flex gap-2 mt-1'>
-										<span className='bg-gray-700 px-2 py-1 rounded-full text-sm'>
+									<div className='flex gap-2 mt-1 expireCardDetails'>
+										<span
+											className={`expireCardDay ${getExpireClass(
+												diffDays
+											)}`}
+										>
 											{diffDays} {diffDays === 1 ? 'Day' : 'Days'}
 										</span>
-										<span className='bg-gray-700 px-2 py-1 rounded-full text-sm'>
+										<span
+											className={`expireCardDate ${getExpireClass(
+												diffDays
+											)}`}
+										>
 											{expDate.toLocaleDateString()}
 										</span>
 									</div>

@@ -9,12 +9,18 @@ body {
 	height: 100%;
 }
 
+.reciptHome {
+	margin: 18px;
+}
 .receiptTitle {
 	font-family: 'Lobster Two', sans-serif;
 	font-size: 1.8rem;
 	margin-bottom: 10px;
 }
 
+.receipt-image {
+	margin-bottom: 40px;
+}
 body {
 	font-family: 'poppins', sans-serif;
 	margin: 0;
@@ -123,4 +129,47 @@ body {
 	height: 4rem;
 	background: linear-gradient(to top, white, rgba(255, 255, 255, 0));
 	pointer-events: none;
+}
+
+.expireCard {
+	background-color: hsl(0, 0%, 90%);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: rgb(0, 0, 0);
+	padding: 5px;
+}
+
+.expireCardDetails {
+	display: flex;
+	width: 100%;
+}
+
+.expireCardDate,
+.expireCardDay {
+	background-color: hsla(0, 0%, 63%, 0.598);
+	display: flex;
+	width: 50%;
+	height: 2rem;
+	font-size: 0.7rem;
+	justify-content: center;
+	align-items: center;
+	border-radius: 25px;
+}
+
+/* Gradient levels */
+.expire-safe {
+	background-color: #dbfbe3; /* gray-700 */
+}
+
+.expire-medium {
+	background-color: #cfc0bf; /* amber-500 */
+}
+
+.expire-high {
+	background-color: #f5d9d9; /* red-500 */
+}
+
+.expire-critical {
+	background-color: #f3a8a8; /* red-700 */
 }
